@@ -42,4 +42,16 @@ public class CheckoutServiceTest {
         CheckoutService checkoutService = new CheckoutService();
         assertEquals(checkoutService.calculateTotal(cart), new BigDecimal("0.60"));
      }
+
+    @Test 
+    public void returnsCorrectTotalForMultipleDifferentCartItems() {
+        Product apple = new Product("Apple", new BigDecimal("0.30"));
+        Product milk = new Product("milk", new BigDecimal("1.30"));
+
+        Cart cart = new Cart();
+        cart.add(new CartItem(apple));
+        cart.add(new CartItem(milk));
+        CheckoutService checkoutService = new CheckoutService();
+        assertEquals(checkoutService.calculateTotal(cart), new BigDecimal("1.60"));
+    }
 }
