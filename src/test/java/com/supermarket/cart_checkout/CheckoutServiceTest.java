@@ -5,6 +5,7 @@ import com.supermarket.cart_checkout.model.CartItem;
 import com.supermarket.cart_checkout.model.Product;
 import com.supermarket.cart_checkout.service.CheckoutService;
 import java.math.BigDecimal;
+
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -13,10 +14,10 @@ public class CheckoutServiceTest {
     @Test
     public void returnZeroTotalForEmptyCart() {
         Cart cart = new Cart();
-        CheckoutService checkoutService = new CheckoutService();
-        BigDecimal total = checkoutService.calculateTotal(cart);
 
-        assertEquals(BigDecimal.ZERO, total);
+        CheckoutService checkoutService = new CheckoutService();
+
+        assertEquals(BigDecimal.ZERO, checkoutService.calculateTotal(cart));
     }
 
     @Test
@@ -25,6 +26,7 @@ public class CheckoutServiceTest {
 
         Cart cart = new Cart();
         cart.add(new CartItem(apple));
+
         CheckoutService checkoutService = new CheckoutService();
 
         assertEquals(new BigDecimal("0.30"), checkoutService.calculateTotal(cart));
@@ -39,19 +41,35 @@ public class CheckoutServiceTest {
         cart.add(new CartItem(apple));
 
         CheckoutService checkoutService = new CheckoutService();
+
         assertEquals(new BigDecimal("0.60"), checkoutService.calculateTotal(cart));
     }
 
     @Test
-    public void returnsCorrectTotalForMultipleDifferentCartItems() {
+    public void returnsCorrectTotalForDifferentCartItems() {
         Product apple = new Product("Apple", new BigDecimal("0.30"));
         Product milk = new Product("milk", new BigDecimal("1.30"));
 
         Cart cart = new Cart();
         cart.add(new CartItem(apple));
         cart.add(new CartItem(milk));
+
         CheckoutService checkoutService = new CheckoutService();
+
         assertEquals(new BigDecimal("1.60"), checkoutService.calculateTotal(cart));
+    }
+
+    @Test void returnsCorrectTotalForCartItemWithQuantity(){
+        Product apple = new Product("Apple", new BigDecimal("0.30"));
+
+        CartItem cartitem = new CartItem(apple,2); 
+
+        Cart cart = new Cart(); 
+        cart.add(cartitem);
+
+        CheckoutService checkoutService = new CheckoutService(); 
+
+        assertEquals(new BigDecimal("0.60"), checkoutService.calculateTotal(cart));
     }
 
 }
