@@ -2,22 +2,25 @@ package com.supermarket.cart_checkout;
 
 import com.supermarket.cart_checkout.model.Cart;
 import com.supermarket.cart_checkout.model.CartItem;
+import com.supermarket.cart_checkout.model.Offer;
 import com.supermarket.cart_checkout.model.Product;
 import com.supermarket.cart_checkout.service.CheckoutService;
 import java.math.BigDecimal;
+import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class CheckoutServiceTest {
 
+    // for tests without offer
+    private final CheckoutService checkoutServiceNoOffer = new CheckoutService(List.of());
+
     @Test
     public void returnZeroTotalForEmptyCart() {
         Cart cart = new Cart();
 
-        CheckoutService checkoutService = new CheckoutService();
-
-        assertEquals(BigDecimal.ZERO, checkoutService.calculateTotal(cart));
+        assertEquals(BigDecimal.ZERO, checkoutServiceNoOffer.calculateTotal(cart));
     }
 
     @Test
@@ -27,9 +30,7 @@ public class CheckoutServiceTest {
         Cart cart = new Cart();
         cart.add(new CartItem(apple));
 
-        CheckoutService checkoutService = new CheckoutService();
-
-        assertEquals(new BigDecimal("0.30"), checkoutService.calculateTotal(cart));
+        assertEquals(new BigDecimal("0.30"), checkoutServiceNoOffer.calculateTotal(cart));
     }
 
     @Test
@@ -40,9 +41,7 @@ public class CheckoutServiceTest {
         cart.add(new CartItem(apple));
         cart.add(new CartItem(apple));
 
-        CheckoutService checkoutService = new CheckoutService();
-
-        assertEquals(new BigDecimal("0.60"), checkoutService.calculateTotal(cart));
+        assertEquals(new BigDecimal("0.60"), checkoutServiceNoOffer.calculateTotal(cart));
     }
 
     @Test
@@ -54,9 +53,7 @@ public class CheckoutServiceTest {
         cart.add(new CartItem(apple));
         cart.add(new CartItem(milk));
 
-        CheckoutService checkoutService = new CheckoutService();
-
-        assertEquals(new BigDecimal("1.60"), checkoutService.calculateTotal(cart));
+        assertEquals(new BigDecimal("1.60"), checkoutServiceNoOffer.calculateTotal(cart));
     }
 
     @Test void returnsCorrectTotalForCartItemWithQuantity(){
@@ -67,9 +64,7 @@ public class CheckoutServiceTest {
         Cart cart = new Cart(); 
         cart.add(cartitem);
 
-        CheckoutService checkoutService = new CheckoutService(); 
-
-        assertEquals(new BigDecimal("0.60"), checkoutService.calculateTotal(cart));
+        assertEquals(new BigDecimal("0.60"), checkoutServiceNoOffer.calculateTotal(cart));
     }
 
     @Test void returnsCombinedQuantityForSameProductAddedSeparately(){
@@ -90,5 +85,20 @@ public class CheckoutServiceTest {
         cart.add(new CartItem(apple, 2));
 
         assertEquals(3, cart.getByProduct(apple).getQuantity());
+    }
+
+    @Test void returnsCorrectTotalWithMulibuyOffer(){
+        Product apple = new Product("Apple", new BigDecimal("0.30"));
+
+        // same task description example
+        Offer offer = new Offer(apple,2, new BigDecimal("0.45")); 
+
+        Cart cart = new Cart();
+        cart.add(new CartItem(apple));
+        cart.add(new CartItem(apple));
+
+        CheckoutService checkoutService = new CheckoutService(List.of(offer)); 
+        
+        assertEquals(new BigDecimal("0.45"), checkoutService.calculateTotal(cart)); 
     }
 }
