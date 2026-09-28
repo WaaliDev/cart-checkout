@@ -72,4 +72,13 @@ public class CheckoutServiceTest {
         assertEquals(new BigDecimal("0.60"), checkoutService.calculateTotal(cart));
     }
 
+    @Test void returnsCombinedQuantityForSameProductAddedSeparately(){
+        Product apple = new Product("Apple", new BigDecimal("0.30"));
+
+        Cart cart = new Cart();
+        cart.add(new CartItem(apple));
+        cart.add(new CartItem(apple));
+
+        assertEquals(1, cart.getByProduct(apple).getQuantity());
+    }
 }

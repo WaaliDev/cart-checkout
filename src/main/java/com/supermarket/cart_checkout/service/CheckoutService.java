@@ -12,7 +12,7 @@ public class CheckoutService {
         BigDecimal total = BigDecimal.ZERO;
 
         for (int i = 0; i < cart.size(); i++) {
-            CartItem cartItem = cart.get(i);
+            CartItem cartItem = cart.getByindex(i);
 
             BigDecimal productPrice = cartItem.getUnitPrice();
             // quanity of type BigDecimal for easier multiplication

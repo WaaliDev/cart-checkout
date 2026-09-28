@@ -5,20 +5,34 @@ import java.util.ArrayList;
 
 public class Cart {
 
-    private List<CartItem> Cart = new ArrayList<>(); 
+    private List<CartItem> cart = new ArrayList<>(); 
 
      // an empty Cart
-    public Cart(){}
+    public Cart(){}   
 
-    public void add(CartItem cartItem){
-        Cart.add(cartItem); 
-    }    
-
-    public CartItem get(int index){
-        return this.Cart.get(index); 
+    public CartItem getByindex(int index){
+        return this.cart.get(index); 
     }
 
+    public CartItem getByProduct(Product product){
+        return this.cart.stream().
+        // equals because no duplicate products
+        filter(cartItem -> cartItem.getProduct().equals(product))
+        .findFirst().orElse(null); 
+    }
+
+    public void add(CartItem cartItem){
+        CartItem existingItem = getByProduct(cartItem.getProduct()); 
+
+        if (existingItem!=null){
+            existingItem.increaseQuantity(cartItem.getQuantity());
+        }
+        else{
+            cart.add(cartItem);
+        }
+    } 
+
     public int size(){
-        return this.Cart.size(); 
+        return this.cart.size(); 
     }
 }

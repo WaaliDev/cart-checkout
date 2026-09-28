@@ -23,6 +23,10 @@ public class CartItem {
         return this.quantity; 
     } 
 
+    public void increaseQuantity(int amount){
+        this.quantity = this.quantity + amount; 
+    }
+
     public BigDecimal getUnitPrice(){
         return this.product.getPrice(); 
     }
