@@ -79,6 +79,16 @@ public class CheckoutServiceTest {
         cart.add(new CartItem(apple));
         cart.add(new CartItem(apple));
 
-        assertEquals(1, cart.getByProduct(apple).getQuantity());
+        assertEquals(2, cart.getByProduct(apple).getQuantity());
+    }
+
+    @Test void returnsCombinedDifferentQuantitiesOfSameProduct(){
+        Product apple = new Product("Apple", new BigDecimal("0.30"));
+
+        Cart cart = new Cart();
+        cart.add(new CartItem(apple));
+        cart.add(new CartItem(apple, 2));
+
+        assertEquals(3, cart.getByProduct(apple).getQuantity());
     }
 }
