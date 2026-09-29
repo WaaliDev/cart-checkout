@@ -11,6 +11,7 @@ import com.supermarket.cart_checkout.model.Offer;
 public class CheckoutService {
 
     // checkoutservice has the knowledge of offers
+    // offers will stay the same for every customer
     private List<Offer> offers = new ArrayList<>(); 
 
     public CheckoutService(List<Offer> offers){
@@ -43,12 +44,11 @@ public class CheckoutService {
                     /offer.getReqQuantity();   
                     
                     // price*quantity
-                    regularPrice = regularPrice.multiply(BigDecimal.valueOf(countRegularItems));
                     bundlePrice = offer.getOfferPrice().multiply(BigDecimal.valueOf(countBundle)); 
                 }
             }
             
-            // necessary for code with no offer path
+            // this need to be executed anway
             regularPrice = regularPrice.multiply(BigDecimal.valueOf(countRegularItems));
 
             total = total.add(regularPrice.add(bundlePrice)); 
