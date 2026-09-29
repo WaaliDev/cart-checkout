@@ -38,17 +38,17 @@ public class CheckoutService {
 
                 if (offer.getProduct()==cartItem.getProduct()){
 
-                    countRegularItems = cartItem.getQuantity() % offer.getReqQuantity();
+                    countRegularItems = countRegularItems % offer.getReqQuantity();
 
                     countBundle =  (cartItem.getQuantity() - countRegularItems)
                     /offer.getReqQuantity();   
                     
                     // price*quantity
-                    bundlePrice = offer.getOfferPrice().multiply(BigDecimal.valueOf(countBundle)); 
+                    bundlePrice = offer.getUnittBundlePrice().multiply(BigDecimal.valueOf(countBundle)); 
                 }
             }
-            
-            // this need to be executed anway
+
+            // this need to be executed anyway
             regularPrice = regularPrice.multiply(BigDecimal.valueOf(countRegularItems));
 
             total = total.add(regularPrice.add(bundlePrice)); 

@@ -21,7 +21,7 @@ public class Offer {
         return this.reqQuantity; 
     }
 
-    public BigDecimal getOfferPrice(){
+    public BigDecimal getUnittBundlePrice(){
         return this.offerPrice; 
     }
 }

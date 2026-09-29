@@ -26,7 +26,7 @@ public class CheckoutServiceTest {
     // for tests without offer
     private final CheckoutService checkoutServiceNoOffer = new CheckoutService(List.of());
     // for tests with offer
-    CheckoutService checkoutServiceWithOffer = new CheckoutService(List.of(appleOffer,mangoOffer)); 
+    CheckoutService checkoutServiceIncOffer = new CheckoutService(List.of(appleOffer,mangoOffer)); 
 
     // an empty card
     Cart cart = new Cart();
@@ -104,7 +104,18 @@ public class CheckoutServiceTest {
         cart.add(new CartItem(mango, 2)); 
 
         assertEquals(new BigDecimal("3.95"), 
-        checkoutServiceWithOffer.calculateTotal(cart));
+        checkoutServiceIncOffer.calculateTotal(cart));
     }
 
+    @Test void returnsCorrectTotalWithAndWithoutOffers(){
+
+        //with one apple has no offer
+        cart.add(new CartItem(apple));
+        
+        //two mangoes have an offer
+        cart.add(new CartItem(mango,2)); // or two times calling mango api
+
+        assertEquals(new BigDecimal("3.80"), 
+        checkoutServiceIncOffer.calculateTotal(cart)); 
+    }
 }
