@@ -17,16 +17,19 @@ public class CheckoutServiceTest {
     Product apple = new Product("Apple", new BigDecimal("0.30"));
     Product milk = new Product("milk", new BigDecimal("1.30"));
     Product mango = new Product ("Mango", new BigDecimal("2.30")); 
-
+    Product avocado = new Product("Avocado", new BigDecimal("1.00"));   
     // offers
     // same as task description example
     Offer appleOffer = new Offer(apple,2, new BigDecimal("0.45")); 
     Offer mangoOffer = new Offer(mango, 2, new BigDecimal("3.50")); 
+    Offer avocadoOffer = new Offer(avocado, 3, new BigDecimal("2.00")); 
 
     // for tests without offer
     private final CheckoutService checkoutServiceNoOffer = new CheckoutService(List.of());
     // for tests with offer
-    CheckoutService checkoutServiceIncOffer = new CheckoutService(List.of(appleOffer,mangoOffer)); 
+    CheckoutService checkoutServiceIncOffer = new CheckoutService(List.of(appleOffer,mangoOffer,
+        avocadoOffer
+    )); 
 
     // an empty card
     Cart cart = new Cart();
@@ -130,6 +133,16 @@ public class CheckoutServiceTest {
 
         assertEquals(new BigDecimal("4.80"), 
         checkoutServiceIncOffer.calculateTotal(cart));
+    }
+
+    @Test void returnsCorrectTotalWhenMultipleItemsRemainAfterOffer(){
+
+        // avocado has offer on 3 avocados 
+        // so remainder would be 2 regular items
+        cart.add(new CartItem(avocado,5));
+
+        assertEquals(new BigDecimal("4.00")
+        ,checkoutServiceIncOffer.calculateTotal(cart));
     }
 
 }
