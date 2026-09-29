@@ -145,4 +145,13 @@ public class CheckoutServiceTest {
         ,checkoutServiceIncOffer.calculateTotal(cart));
     }
 
+    @Test void returnsCorrectTotalWhenOfferAppliesMultipleTimes(){
+
+        //offer on 2 apples, bought four
+        cart.add(new CartItem(apple,4));
+
+        assertEquals(new BigDecimal("0.90")
+        ,checkoutServiceIncOffer.calculateTotal(cart));
+    }
+
 }
