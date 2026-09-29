@@ -154,4 +154,16 @@ public class CheckoutServiceTest {
         ,checkoutServiceIncOffer.calculateTotal(cart));
     }
 
+    @Test void returnsCorrectTotalWhenItemsAreAddedInAnyOrder(){
+
+        // in any order
+        cart.add(new CartItem(apple));
+        // mango
+        cart.add(new CartItem(mango)); 
+        //apple again
+        cart.add(new CartItem(apple));  
+
+        assertEquals(new BigDecimal("2.75"), 
+        checkoutServiceIncOffer.calculateTotal(cart));
+    }
 }
