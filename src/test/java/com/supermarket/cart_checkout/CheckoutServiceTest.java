@@ -97,8 +97,8 @@ public class CheckoutServiceTest {
         checkoutService.calculateTotal(cart)); 
     }
 
-    @Test void rreturnsCorrectTotalWhenMultipleProductsHaveOffers(){
-        
+    @Test void returnsCorrectTotalWhenMultipleProductsHaveOffers(){
+
         // each product is eligible for an offer
         cart.add(new CartItem(apple, 2)); 
         cart.add(new CartItem(mango, 2)); 
