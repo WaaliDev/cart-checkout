@@ -118,4 +118,18 @@ public class CheckoutServiceTest {
         assertEquals(new BigDecimal("3.80"), 
         checkoutServiceIncOffer.calculateTotal(cart)); 
     }
+
+    @Test void returnsCorrectTotalWhenProductWithoutOfferFollowsOffer(){
+        
+        // one by one or mentioning quantity
+        cart.add(new CartItem(mango)); 
+        cart.add(new CartItem(mango)); 
+
+        // mulk has no offer defined
+        cart.add(new CartItem(milk)); 
+
+        assertEquals(new BigDecimal("4.80"), 
+        checkoutServiceIncOffer.calculateTotal(cart));
+    }
+
 }
