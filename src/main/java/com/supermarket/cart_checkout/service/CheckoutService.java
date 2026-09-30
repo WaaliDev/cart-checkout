@@ -4,10 +4,13 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
 import com.supermarket.cart_checkout.model.Cart;
 import com.supermarket.cart_checkout.model.CartItem;
 import com.supermarket.cart_checkout.model.Offer;
 
+@Service 
 public class CheckoutService {
 
     // checkoutservice has the knowledge of offers

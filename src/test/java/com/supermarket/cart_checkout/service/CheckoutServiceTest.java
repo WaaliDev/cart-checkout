@@ -1,10 +1,9 @@
-package com.supermarket.cart_checkout;
+package com.supermarket.cart_checkout.service;
 
 import com.supermarket.cart_checkout.model.Cart;
 import com.supermarket.cart_checkout.model.CartItem;
 import com.supermarket.cart_checkout.model.Offer;
 import com.supermarket.cart_checkout.model.Product;
-import com.supermarket.cart_checkout.service.CheckoutService;
 import java.math.BigDecimal;
 import java.util.List;
 
