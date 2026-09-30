@@ -37,7 +37,6 @@ public class CheckoutService {
             // reset everytime - there was a bug before
             bundlePrice = BigDecimal.ZERO; 
 
-
             for (Offer offer: offers){
                 
 
