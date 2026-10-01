@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.supermarket.cart_checkout.dto.CheckoutRequest;
-import com.supermarket.cart_checkout.model.Cart;
-import com.supermarket.cart_checkout.model.CartItem;
+import com.supermarket.cart_checkout.model.Items;
+import com.supermarket.cart_checkout.model.Item;
 import com.supermarket.cart_checkout.model.Offer;
 import com.supermarket.cart_checkout.model.Product;
 import com.supermarket.cart_checkout.service.CheckoutService;
@@ -35,7 +35,7 @@ public class CheckoutController {
 
       @PostMapping("/checkout")
     public BigDecimal checkoutTotal(@RequestBody List<CheckoutRequest> checkoutRequest) {
-        Cart cart = new Cart();
+        Items cart = new Items();
 
         for (CheckoutRequest requestItem : checkoutRequest) {
             Product product = this.productByName.get(requestItem.getName());
@@ -51,9 +51,9 @@ public class CheckoutController {
         
         // constructor -> quantity specified or not
         if (requestItem.getQuantity() == null) {
-            cart.add(new CartItem(product));
+            cart.add(new Item(product));
         } else {
-            cart.add(new CartItem(product, requestItem.getQuantity()));
+            cart.add(new Item(product, requestItem.getQuantity()));
         }
     }
 

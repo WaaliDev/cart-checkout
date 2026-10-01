@@ -1,7 +1,7 @@
 package com.supermarket.cart_checkout.service;
 
-import com.supermarket.cart_checkout.model.Cart;
-import com.supermarket.cart_checkout.model.CartItem;
+import com.supermarket.cart_checkout.model.Items;
+import com.supermarket.cart_checkout.model.Item;
 import com.supermarket.cart_checkout.model.Offer;
 import com.supermarket.cart_checkout.model.Product;
 import java.math.BigDecimal;
@@ -30,7 +30,7 @@ public class CheckoutServiceTest {
             avocadoOffer));
 
     // an empty card
-    Cart cart = new Cart();
+    Items cart = new Items();
 
     @Test
     public void returnZeroTotalForEmptyCart() {
@@ -41,23 +41,23 @@ public class CheckoutServiceTest {
 
     @Test
     public void returnsCorrectTotalForSingleCartItem() {
-        cart.add(new CartItem(apple));
+        cart.add(new Item(apple));
 
         assertEquals(new BigDecimal("0.30"), checkoutServiceNoOffer.calculateTotal(cart));
     }
 
     @Test
     public void returnsCorrectTotalForMultipleSameCartItems() {
-        cart.add(new CartItem(apple));
-        cart.add(new CartItem(apple));
+        cart.add(new Item(apple));
+        cart.add(new Item(apple));
 
         assertEquals(new BigDecimal("0.60"), checkoutServiceNoOffer.calculateTotal(cart));
     }
 
     @Test
     public void returnsCorrectTotalForDifferentCartItems() {
-        cart.add(new CartItem(apple));
-        cart.add(new CartItem(milk));
+        cart.add(new Item(apple));
+        cart.add(new Item(milk));
 
         assertEquals(new BigDecimal("1.60"), checkoutServiceNoOffer.calculateTotal(cart));
     }
@@ -65,7 +65,7 @@ public class CheckoutServiceTest {
     @Test
     void returnsCorrectTotalForCartItemWithQuantity() {
 
-        CartItem cartitem = new CartItem(apple, 2);
+        Item cartitem = new Item(apple, 2);
 
         cart.add(cartitem);
 
@@ -76,8 +76,8 @@ public class CheckoutServiceTest {
     @Test
     void returnsCombinedQuantityForSameProductAddedSeparately() {
 
-        cart.add(new CartItem(apple));
-        cart.add(new CartItem(apple));
+        cart.add(new Item(apple));
+        cart.add(new Item(apple));
 
         assertEquals(2, cart.getByProduct(apple).getQuantity());
     }
@@ -85,8 +85,8 @@ public class CheckoutServiceTest {
     @Test
     void returnsCombinedDifferentQuantitiesOfSameProduct() {
 
-        cart.add(new CartItem(apple));
-        cart.add(new CartItem(apple, 2));
+        cart.add(new Item(apple));
+        cart.add(new Item(apple, 2));
 
         assertEquals(3, cart.getByProduct(apple).getQuantity());
     }
@@ -94,8 +94,8 @@ public class CheckoutServiceTest {
     @Test
     void returnsCorrectTotalWithMulibuyOffer() {
 
-        cart.add(new CartItem(apple));
-        cart.add(new CartItem(apple));
+        cart.add(new Item(apple));
+        cart.add(new Item(apple));
 
         CheckoutService checkoutService = new CheckoutService(List.of(appleOffer));
 
@@ -107,8 +107,8 @@ public class CheckoutServiceTest {
     void returnsCorrectTotalWhenMultipleProductsHaveOffers() {
 
         // each product is eligible for an offer
-        cart.add(new CartItem(apple, 2));
-        cart.add(new CartItem(mango, 2));
+        cart.add(new Item(apple, 2));
+        cart.add(new Item(mango, 2));
 
         assertEquals(new BigDecimal("3.95"),
                 checkoutServiceIncOffer.calculateTotal(cart));
@@ -118,10 +118,10 @@ public class CheckoutServiceTest {
     void returnsCorrectTotalWithAndWithoutOffers() {
 
         // with one apple has no offer
-        cart.add(new CartItem(apple));
+        cart.add(new Item(apple));
 
         // two mangoes have an offer
-        cart.add(new CartItem(mango, 2)); // or two times calling mango api
+        cart.add(new Item(mango, 2)); // or two times calling mango api
 
         assertEquals(new BigDecimal("3.80"),
                 checkoutServiceIncOffer.calculateTotal(cart));
@@ -131,11 +131,11 @@ public class CheckoutServiceTest {
     void returnsCorrectTotalWhenProductWithoutOfferFollowsOffer() {
 
         // one by one or mentioning quantity
-        cart.add(new CartItem(mango));
-        cart.add(new CartItem(mango));
+        cart.add(new Item(mango));
+        cart.add(new Item(mango));
 
         // mulk has no offer defined
-        cart.add(new CartItem(milk));
+        cart.add(new Item(milk));
 
         assertEquals(new BigDecimal("4.80"),
                 checkoutServiceIncOffer.calculateTotal(cart));
@@ -146,7 +146,7 @@ public class CheckoutServiceTest {
 
         // avocado has offer on 3 avocados
         // so remainder would be 2 regular items
-        cart.add(new CartItem(avocado, 5));
+        cart.add(new Item(avocado, 5));
 
         assertEquals(new BigDecimal("4.00"), 
                 checkoutServiceIncOffer.calculateTotal(cart));
@@ -156,7 +156,7 @@ public class CheckoutServiceTest {
     void returnsCorrectTotalWhenOfferAppliesMultipleTimes() {
 
         // offer on 2 apples, bought four
-        cart.add(new CartItem(apple, 4));
+        cart.add(new Item(apple, 4));
 
         assertEquals(new BigDecimal("0.90"), 
                 checkoutServiceIncOffer.calculateTotal(cart));
@@ -166,11 +166,11 @@ public class CheckoutServiceTest {
     void returnsCorrectTotalWhenItemsAreAddedInAnyOrder() {
 
         // in any order, first apple
-        cart.add(new CartItem(apple));
+        cart.add(new Item(apple));
         // different item - mango
-        cart.add(new CartItem(mango));
+        cart.add(new Item(mango));
         // apple again
-        cart.add(new CartItem(apple));
+        cart.add(new Item(apple));
 
         assertEquals(new BigDecimal("2.75"),
                 checkoutServiceIncOffer.calculateTotal(cart));
