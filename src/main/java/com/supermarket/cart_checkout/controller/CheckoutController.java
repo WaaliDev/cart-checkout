@@ -33,25 +33,37 @@ public class CheckoutController {
         checkoutService = new CheckoutService(offers); 
     }
 
-    @PostMapping("/checkout")
-    public BigDecimal checkoutTotal(@RequestBody List<CheckoutRequest> checkoutRequest ){
-        
-        Cart tempCart = new Cart(); 
+      @PostMapping("/checkout")
+    public BigDecimal checkoutTotal(@RequestBody List<CheckoutRequest> checkoutRequest) {
+        Cart cart = new Cart();
 
-        for (CheckoutRequest requestItems: checkoutRequest){
-            if(productByName.containsKey(requestItems.getName())){
-                if(requestItems.getQuantity()==null){
-                    tempCart.add(new CartItem(productByName.get(requestItems.getName()))); 
-                }
-                else{
-                tempCart.add(new CartItem(productByName.get(requestItems.getName()), requestItems.getQuantity()));
-                }
+        for (CheckoutRequest requestItem : checkoutRequest) {
+            Product product = this.productByName.get(requestItem.getName());
+
+            if (product == null) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "Unknown product: " + requestItem.getName());
             }
-            else{
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Unknown product: " + requestItems.getName());
+            if (!isValidQuantity(requestItem.getQuantity())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                "Quantity must be at least 1 for product: " + requestItem.getName());
             }
+        
+        // constructor -> quantity specified or not
+        if (requestItem.getQuantity() == null) {
+            cart.add(new CartItem(product));
+        } else {
+            cart.add(new CartItem(product, requestItem.getQuantity()));
         }
-        return checkoutService.calculateTotal(tempCart); 
+    }
+
+    return this.checkoutService.calculateTotal(cart);
+}
+
+    private static boolean isValidQuantity(Integer quantity) {
+        
+        // missing quantity is allowed and means 1
+        return quantity == null || quantity >= 1;
     }
 }
 

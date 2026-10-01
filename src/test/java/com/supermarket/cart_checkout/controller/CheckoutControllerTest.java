@@ -50,4 +50,18 @@ class CheckoutControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string("0.30"));
     }
+
+
+    @Test void returnsBadRequestForZeroQuantity() throws Exception {
+        String body = """
+            [{"name": "Apple", "quantity": 0}] """;
+            
+        this.mockMvc.perform(post("/checkout")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(body))
+            .andExpect(status().isBadRequest());
+}
+
+
+
 }
