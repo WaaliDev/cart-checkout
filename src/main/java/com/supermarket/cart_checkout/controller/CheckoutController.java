@@ -15,22 +15,18 @@ import org.springframework.web.server.ResponseStatusException;
 import com.supermarket.cart_checkout.dto.CheckoutRequest;
 import com.supermarket.cart_checkout.model.Items;
 import com.supermarket.cart_checkout.model.Item;
-import com.supermarket.cart_checkout.model.Offer;
 import com.supermarket.cart_checkout.model.Product;
 import com.supermarket.cart_checkout.service.CheckoutService;
 
 @RestController 
 public class CheckoutController {
-    public final CheckoutService checkoutService;
-    
-    // given by bean
-    List<Offer> offers = new ArrayList<>(); 
-    Map<String, Product> productByName = new HashMap<>(); 
+    // given by spring
+    private final CheckoutService checkoutService;
+    Map<String, Product> productByName; 
 
-    public CheckoutController(List<Offer> offers, Map<String, Product> productByName ){
-        this.offers = offers; 
+    public CheckoutController( Map<String, Product> productByName, CheckoutService checkoutService){
         this.productByName = productByName; 
-        checkoutService = new CheckoutService(offers); 
+        this.checkoutService=checkoutService; 
     }
 
       @PostMapping("/checkout")
